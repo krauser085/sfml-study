@@ -29,9 +29,9 @@ int main() {
 				window.close();
 				break;
 			case sf::Event::KeyPressed :
-				std::cout << "key pressed " << event.key.code << std::endl;
+				std::cout << "key pressed" << event.key.code << std::endl;
 				switch (event.key.code) {
-				case sf::Keyboard:::
+				case sf::Keyboard::Left:
 					std::cout << "going left" << std::endl;
 					horizontal--;
 					break;
