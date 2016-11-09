@@ -1,4 +1,5 @@
 #include <SFML\Graphics.hpp>
+#include <iostream>
 
 int main() {
 	// set RenderWindow
@@ -6,6 +7,7 @@ int main() {
 	
 	float horizontal = 320;
 	float vertical = 240;
+	
 	// set circle
 	sf::CircleShape circle;
 	circle.setRadius(70);
@@ -21,8 +23,33 @@ int main() {
 
 		while (window.pollEvent(event)) {
 
-			horizontal--;
-			
+			switch (event.type) {
+			// close window when click the exit button
+			case sf::Event::Closed :
+				window.close();
+				break;
+			case sf::Event::KeyPressed :
+				std::cout << "key pressed " << event.key.code << std::endl;
+				switch (event.key.code) {
+				case sf::Keyboard:::
+					std::cout << "going left" << std::endl;
+					horizontal--;
+					break;
+				case sf::Keyboard::Right:
+					std::cout << "going right" << std::endl;
+					horizontal++;
+					break;
+				case sf::Keyboard::Up:
+					std::cout << "going up" << std::endl;
+					vertical--;
+					break;
+				case sf::Keyboard::Down :
+					std::cout << "going down" << std::endl;
+					vertical++;
+					break;
+				}
+				break;
+			}
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
