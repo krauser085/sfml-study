@@ -1,22 +1,33 @@
 #include <SFML\Graphics.hpp>
 #include <iostream>
 
+enum direction{stop, left, right, up, down};
+
 int main() {
 	// set RenderWindow
 	sf::RenderWindow window(sf::VideoMode(640, 480), "sfml test!!!");
 	
+	// init. direction
+	direction d = stop;
+
 	float horizontal = 320;
 	float vertical = 240;
-	
+
+	float hSpeed = 0;
+	float vSpeed = 0;
+	float fLimit = 0.07;
+	float bLimit = -0.07;
+
 	// set circle
 	sf::CircleShape circle;
-	circle.setRadius(70);
+	circle.setRadius(10);
 	circle.setFillColor(sf::Color::Red);
 
-	while (window.isOpen()) {
+	// set circle position on this loop to make it move
+	circle.setPosition(horizontal, vertical);
 
-		// set circle position on this loop to make it move
-		circle.setPosition(horizontal, vertical);
+
+	while (window.isOpen()) {
 		
 		// some sort of Event Handler?
 		sf::Event event;
@@ -25,27 +36,21 @@ int main() {
 
 			switch (event.type) {
 			// close window when click the exit button
-			case sf::Event::Closed :
 				window.close();
 				break;
 			case sf::Event::KeyPressed :
-				std::cout << "key pressed" << event.key.code << std::endl;
 				switch (event.key.code) {
 				case sf::Keyboard::Left:
-					std::cout << "going left" << std::endl;
-					horizontal--;
+					d = left;
 					break;
 				case sf::Keyboard::Right:
-					std::cout << "going right" << std::endl;
-					horizontal++;
+					d = right;
 					break;
 				case sf::Keyboard::Up:
-					std::cout << "going up" << std::endl;
-					vertical--;
+					d = up;
 					break;
 				case sf::Keyboard::Down :
-					std::cout << "going down" << std::endl;
-					vertical++;
+					d = down;
 					break;
 				}
 				break;
@@ -55,6 +60,42 @@ int main() {
 			}
 		}
 
+		// move circle
+		switch (d) {
+		case left:
+			if (hSpeed > 0) hSpeed = 0;
+			if (hSpeed > bLimit) hSpeed -= 0.0001;
+
+			if (vSpeed > 0) vSpeed -= 0.00005;
+			else if (vSpeed < 0) vSpeed += 0.00005;
+			break;
+		case right:
+			if (hSpeed < 0) hSpeed = 0;
+			if (hSpeed < fLimit) hSpeed += 0.0001;
+
+			if (vSpeed > 0) vSpeed -= 0.00005;
+			else if (vSpeed < 0) vSpeed += 0.00005;
+			break;
+		case up:
+			if (vSpeed > 0) vSpeed = 0;
+			if (vSpeed > bLimit) vSpeed -= 0.0001;
+
+			if (hSpeed > 0) hSpeed -= 0.00005;
+			else if (hSpeed < 0) hSpeed += 0.00005;
+			break;
+		case down:
+			if (vSpeed < 0) vSpeed = 0;
+			if (vSpeed < fLimit) vSpeed += 0.0001;
+
+			if (hSpeed > 0) hSpeed -= 0.00005;
+			else if (hSpeed < 0) hSpeed += 0.00005;
+			break;
+		}
+		
+		horizontal += hSpeed;
+		vertical += vSpeed;
+		// set circle position on this loop to make it move
+		circle.setPosition(horizontal, vertical);
 		// clear on every frame
 		window.clear(sf::Color::White);
 		// draw the circle on every frame
