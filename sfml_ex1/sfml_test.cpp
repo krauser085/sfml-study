@@ -3,10 +3,17 @@
 
 enum direction{stop, left, right, up, down};
 
+// set image
+sf::Texture image;
+sf::Sprite imagePlayer;
 int main() {
 	// set RenderWindow
 	sf::RenderWindow window(sf::VideoMode(640, 480), "sfml test!!!");
 	
+	// load image file from project folder into the texture
+	if (!image.loadFromFile("snake.png", sf::IntRect(256,0,64,64))) std::cout << "there's no file!" << std::endl;
+
+	imagePlayer.setTexture(image);
 	// init. direction
 	direction d = stop;
 
@@ -24,7 +31,8 @@ int main() {
 	circle.setFillColor(sf::Color::Red);
 
 	// set circle position on this loop to make it move
-	circle.setPosition(horizontal, vertical);
+	//circle.setPosition(horizontal, vertical);
+	imagePlayer.setPosition(horizontal, vertical);
 
 
 	while (window.isOpen()) {
@@ -95,11 +103,13 @@ int main() {
 		horizontal += hSpeed;
 		vertical += vSpeed;
 		// set circle position on this loop to make it move
-		circle.setPosition(horizontal, vertical);
+		//circle.setPosition(horizontal, vertical);
+		imagePlayer.setPosition(horizontal, vertical);
 		// clear on every frame
 		window.clear(sf::Color::White);
 		// draw the circle on every frame
 		window.draw(circle);
+		window.draw(imagePlayer);
 		// display what window has done on every frame
 		window.display();
 	}
